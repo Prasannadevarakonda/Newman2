@@ -44,16 +44,18 @@ jobs:
        # Run Collection  
       - name: Run Collection
         run: |
-          newman run "TestCollection.postman_collection1.json" -e "MasterAPI ENV.postman_environment1.json" -r htmlextra --reporter-
-          htmlextra-export SampleArtifact/report.html
+          newman run "TestCollection.postman_collection1.json" -e "MasterAPI ENV.postman_environment1.json"
       
-      # Publish the Report
+      # Generate Report
+      - name: Generate Report
+        run: |
+         newman run "TestCollection.postman_collection1.json" -e "MasterAPI ENV.postman_environment1.json" -r htmlextra --reporter-htmlextra-export SampleArtifacts/report.html
+
+     # Publish the Report
       - name: Publish Report
-        uses: actions/checkout@v3
+        uses: actions/upload-artifact@v2
         with:
-           name : Reports
-           path : SampleArtifacts
-         
- 
+         name: Reports
+         path: SampleArtifacts
           
           
