@@ -44,7 +44,7 @@ jobs:
        # Run Collection  
       - name: Run Collection
         run: |
-          newman run "collection/TestCollection.postman_collection1.json" -e "collection/MasterAPI ENV.postman_environment1.json" -r htmlextra --reporter-
+          newman run "TestCollection.postman_collection1.json" -e "MasterAPI ENV.postman_environment1.json" -r htmlextra --reporter-
           htmlextra-export SampleArtifact/report.html
       
       # Publish the Report
