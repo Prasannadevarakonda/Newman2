@@ -1,0 +1,207 @@
+{
+	"info": {
+		"_postman_id": "cbc8c08c-6ea6-48d1-a9b3-0b04aac86055",
+		"name": "TestCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14992721"
+	},
+	"item": [
+		{
+			"name": "Generate Access Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response has a JSON body\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has an access_token property\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.access_token).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"var data = pm.response.json();\r",
+							"pm.environment.set(\"access_token\", data.access_token);\r",
+							"\r",
+							"tests[\"status code is 200\"] = responseCode.code == 200;\r",
+							"\r",
+							"pm.test(\"Access Token\", function () {\r",
+							"    var accessToken = pm.environment.get(\"access_token\");\r",
+							"    pm.expect(accessToken).to.exist;\r",
+							"    pm.expect(accessToken).to.be.a(\"string\");\r",
+							"    pm.test(\"Access Token Value: \" + accessToken);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic NGhwZmljN3FyMTRxcTl1MWh0dGk4ZW5yZXY6MWdhOWdwOTY2OHY5ODJuMjZrbWh0MWs4ZjJldmVzM2VmajBnYWdjZmVtbTR1NW1vaTRuZg==",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://grasp-gilda-token.auth.us-west-2.amazoncognito.com/oauth2/token?grant_type=client_credentials&client_id=4hpfic7qr14qq9u1htti8enrev&scope=apiauthidentifier/json.read",
+					"protocol": "https",
+					"host": [
+						"grasp-gilda-token",
+						"auth",
+						"us-west-2",
+						"amazoncognito",
+						"com"
+					],
+					"path": [
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						},
+						{
+							"key": "client_id",
+							"value": "4hpfic7qr14qq9u1htti8enrev"
+						},
+						{
+							"key": "scope",
+							"value": "apiauthidentifier/json.read"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Products By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(200);\r",
+							"        });\r",
+							"\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJQeVpUOWtTZ29INlNSUURBMmFKQkZwUFJ1UEhkY3hwVjc1UWlrYUhIblNnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI0aHBmaWM3cXIxNHFxOXUxaHR0aThlbnJldiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXBpYXV0aGlkZW50aWZpZXJcL2pzb24ucmVhZCIsImF1dGhfdGltZSI6MTY5MDk3MzMyOCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLXdlc3QtMi5hbWF6b25hd3MuY29tXC91cy13ZXN0LTJfcWZWYWRhalA2IiwiZXhwIjoxNjkwOTc2OTI4LCJpYXQiOjE2OTA5NzMzMjgsInZlcnNpb24iOjIsImp0aSI6IjQxZTU4NmEyLWI1YzEtNGNlNi04Y2FiLTUwN2MyNTFiZjE1ZCIsImNsaWVudF9pZCI6IjRocGZpYzdxcjE0cXE5dTFodHRpOGVucmV2In0.L47LpUrX_9BGZ62grKUSfxAclQmn8q8iM6zKPtDOVkkK3XB7q74X9j-25f5Hwi6B1xspcOQQDAP703idCr_Kjf6ITqK9T0ouq7X3vw_AhPL6phuH6_kBi8661ifpyLB-LbvHUa3JN2y9JI17jukfugQQQwnVOm-vTYtdgyh582PmznlfHRFsGpwJ8r5IJLhOQQSKFkyr5P4-6roHradlPCGdkYYwma2QEpnI4rnwPL_gWXhmSK8G5VHpqtvYYt8H5GQxDIxYVUMM1Woh8jENtf5pK4E4nw0L8rL2QsQzaBQGLbjQbSaTbuGHCw5MNqphDcUQ2R7t763vlZVsUOQtCw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/products/14",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"products",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Protocols By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "User-token",
+						"value": "{[access_token]}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/protocols/{{protocols}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"protocols",
+						"{{protocols}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
