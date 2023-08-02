@@ -44,7 +44,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Basic NGhwZmljN3FyMTRxcTl1MWh0dGk4ZW5yZXY6MWdhOWdwOTY2OHY5ODJuMjZrbWh0MWs4ZjJldmVzM2VmajBnYWdjZmVtbTR1NW1vaTRuZg==",
+						"value": "{{access_token}}",
 						"type": "text"
 					},
 					{
