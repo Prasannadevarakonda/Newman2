@@ -1,29 +1,60 @@
-trigger:
-- main
+# This is a basic workflow to help you get started with Actions
 
-pool:
-  vmImage: 'ubuntu-latest'
+name: Newman CLI
 
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+# Steps represent a sequence of tasks that will be executed as part of the job
 steps:
-- checkout: self
+  # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  - uses: actions/checkout@v3
+  - name: createdir
+    run: |
+      pdir SampleArtifact
+       
+      # Install NodeJS
+      - name: Install Node
+        uses: actions/checkout@v3
+        with:
+           node-version : '18.x'
+           
+      # Install newman and reporter
+      - name: Install newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+          
+       # Run Collection  
+      - name: Run Collection
+        run: |
+          newman run "TestCollection.postman_collection9.json" -e "MasterAPI ENV.postman_environment1.json"
+      
+      # Generate Report
+      - name: Generate Report
+        run: |
+         newman run "TestCollection.postman_collection9.json" -e "MasterAPI ENV.postman_environment1.json" -r htmlextra --reporter-htmlextra-export SampleArtifacts/report.html
 
-- task: NodeTool@0
-  inputs:
-    versionSpec: '14.x'
-  displayName: 'Install Node.js'
-
-- script: |
-    npm install -g newman
-    npm install -g newman-reporter-htmlextra
-  displayName: 'Install Newman and HTMLExtra Reporter'
-
-- script: |
-newman run "TestCollection.postman_collection1.json" -e "MasterAPI ENV.postman_environment1.json" -r htmlextra --reporter-htmlextra-export SampleArtifacts/report.html 
-
-displayName: 'Run Newman Collection and Generate Report'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'SampleArtifacts'
-    ArtifactName: 'Reports'
-  displayName: 'Publish Report Artifact'
+      # Publish the Report
+      - name: Publish Report
+       uses: actions/upload-artifact@v2
+       with:
+          name: Reports
+          path: SampleArtifacts
+          
+          
