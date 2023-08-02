@@ -181,7 +181,7 @@
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
+						"value": "application/Json",
 						"type": "text"
 					},
 					{
@@ -191,13 +191,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseURL}}/protocols/{{protocols}}",
+					"raw": "{{baseURL}}/protocols/14",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"protocols",
-						"{{protocols}}"
+						"14"
 					]
 				}
 			},
