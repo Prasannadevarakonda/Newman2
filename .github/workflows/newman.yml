@@ -44,12 +44,12 @@ jobs:
        # Run Collection  
       - name: Run Collection
         run: |
-          newman run "TestCollection.postman_collection1.json" -e "MasterAPI ENV.postman_environment1.json"
+          newman run "TestCollection.postman_collection9.json" -e "MasterAPI ENV.postman_environment1.json"
       
       # Generate Report
       - name: Generate Report
         run: |
-         newman run "TestCollection.postman_collection1.json" -e "MasterAPI ENV.postman_environment1.json" -r htmlextra --reporter-htmlextra-export SampleArtifacts/report.html
+         newman run "TestCollection.postman_collection9.json" -e "MasterAPI ENV.postman_environment1.json" -r htmlextra --reporter-htmlextra-export SampleArtifacts/report.html
 
      # Publish the Report
       - name: Publish Report
