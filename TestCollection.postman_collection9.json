@@ -44,7 +44,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "{{access_token}}",
+						"value": "Basic NGhwZmljN3FyMTRxcTl1MWh0dGk4ZW5yZXY6MWdhOWdwOTY2OHY5ODJuMjZrbWh0MWs4ZjJldmVzM2VmajBnYWdjZmVtbTR1NW1vaTRuZg==",
 						"type": "text"
 					},
 					{
@@ -115,7 +115,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJraWQiOiJQeVpUOWtTZ29INlNSUURBMmFKQkZwUFJ1UEhkY3hwVjc1UWlrYUhIblNnPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI0aHBmaWM3cXIxNHFxOXUxaHR0aThlbnJldiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXBpYXV0aGlkZW50aWZpZXJcL2pzb24ucmVhZCIsImF1dGhfdGltZSI6MTY5MDk3MzMyOCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLXdlc3QtMi5hbWF6b25hd3MuY29tXC91cy13ZXN0LTJfcWZWYWRhalA2IiwiZXhwIjoxNjkwOTc2OTI4LCJpYXQiOjE2OTA5NzMzMjgsInZlcnNpb24iOjIsImp0aSI6IjQxZTU4NmEyLWI1YzEtNGNlNi04Y2FiLTUwN2MyNTFiZjE1ZCIsImNsaWVudF9pZCI6IjRocGZpYzdxcjE0cXE5dTFodHRpOGVucmV2In0.L47LpUrX_9BGZ62grKUSfxAclQmn8q8iM6zKPtDOVkkK3XB7q74X9j-25f5Hwi6B1xspcOQQDAP703idCr_Kjf6ITqK9T0ouq7X3vw_AhPL6phuH6_kBi8661ifpyLB-LbvHUa3JN2y9JI17jukfugQQQwnVOm-vTYtdgyh582PmznlfHRFsGpwJ8r5IJLhOQQSKFkyr5P4-6roHradlPCGdkYYwma2QEpnI4rnwPL_gWXhmSK8G5VHpqtvYYt8H5GQxDIxYVUMM1Woh8jENtf5pK4E4nw0L8rL2QsQzaBQGLbjQbSaTbuGHCw5MNqphDcUQ2R7t763vlZVsUOQtCw",
+							"value": "{{access_token}}",
 							"type": "string"
 						}
 					]
