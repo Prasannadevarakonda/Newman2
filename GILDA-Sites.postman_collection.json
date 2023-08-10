@@ -1,0 +1,876 @@
+{
+	"info": {
+		"_postman_id": "387e0fd2-a9c1-405f-960b-b6744356c075",
+		"name": "GILDA-Sites",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29041441"
+	},
+	"item": [
+		{
+			"name": "Generate Access Token-Dev",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response has a JSON body\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has an access_token property\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.access_token).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"var data = pm.response.json();\r",
+							"pm.environment.set(\"access_token\", data.access_token);\r",
+							"\r",
+							"tests[\"status code is 200\"] = responseCode.code == 200;\r",
+							"\r",
+							"pm.test(\"Access Token\", function () {\r",
+							"    var accessToken = pm.environment.get(\"access_token\");\r",
+							"    pm.expect(accessToken).to.exist;\r",
+							"    pm.expect(accessToken).to.be.a(\"string\");\r",
+							"    pm.test(\"Access Token Value: \" + accessToken);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic MTBrbHI5b3Z0YTBpMWZubDMwcnIwNHRqOW86MXFuY3E1MnJqYnVzazNicm8ydG1xY3J2ZmI5NDN1MzFjMnRpcXU1NGczcTFkOTZrZGNscg==",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://default-ds-masterapi-dev.auth.us-west-2.amazoncognito.com/oauth2/token?grant_type=client_credentials",
+					"protocol": "https",
+					"host": [
+						"default-ds-masterapi-dev",
+						"auth",
+						"us-west-2",
+						"amazoncognito",
+						"com"
+					],
+					"path": [
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						},
+						{
+							"key": "client_id",
+							"value": "4surrtkle8ig54jf2b7om50j5g",
+							"disabled": true
+						},
+						{
+							"key": "scope",
+							"value": "gilda-apis/products.read",
+							"disabled": true
+						},
+						{
+							"key": "scope",
+							"value": "gilda-apis/protocols.read",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Sites By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"try {\r",
+							"\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const statusCode = pm.response.code;\r",
+							"    pm.test(\"Expected Status code: \" + statusCode, function () {\r",
+							"        pm.expect(statusCode).to.equal(200);\r",
+							"\r",
+							"    });\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							"// Parse the JSON response\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Get the expected ADDRESS1 from the CSV file\r",
+							"var expectedADDRESS1 = pm.iterationData.get('ADDRESS1');\r",
+							"\r",
+							"// Get the actual ADDRESS1 from the JSON response\r",
+							"var actualADDRESS1 = jsonData.ADDRESS1;\r",
+							"\r",
+							"console.log('Expected ADDRESS1:', expectedADDRESS1);\r",
+							"console.log('Actual ADDRESS1 from Response:', actualADDRESS1);\r",
+							"\r",
+							"// Compare the actual and expected ADDRESS1 values\r",
+							"pm.test(\"ADDRESS1 value matches the expected value\", function () {\r",
+							"    pm.expect(actualADDRESS1).to.equal(expectedADDRESS1);\r",
+							"});\r",
+							"\r",
+							"///////////// ADDRESS2 /////////////////\r",
+							"// Get the expected ADDRESS2 from the CSV file\r",
+							"var expectedADDRESS2 =pm.iterationData.get('ADDRESS2');\r",
+							"\r",
+							"// Get the actual ADDRESS2 from the JSON response\r",
+							"var actualADDRESS2 = jsonData.ADDRESS2;\r",
+							"\r",
+							"console.log('Expected ADDRESS2:', expectedADDRESS2);\r",
+							"console.log('Actual ADDRESS2 from Response:', actualADDRESS2);\r",
+							"\r",
+							"// Compare the actual and expected ADDRESS2 values\r",
+							"pm.test(\"ADDRESS2 value matches the expected value\", function () {\r",
+							"   if (expectedADDRESS2=== 'null') {\r",
+							"            pm.expect(actualADDRESS2).to.equal(null);\r",
+							"        } else {\r",
+							"            pm.expect(actualADDRESS2).to.equal(expectedADDRESS2);\r",
+							"        }\r",
+							"});\r",
+							"///////////// CITY /////////////////\r",
+							"// Get the expected CITY from the CSV file\r",
+							"var expectedCITY = pm.iterationData.get('CITY');\r",
+							"\r",
+							"// Get the actual CITY from the JSON response\r",
+							"var actualCITY = jsonData.CITY;\r",
+							"\r",
+							"console.log('Expected CITY:', expectedCITY);\r",
+							"console.log('Actual CITY from Response:', actualCITY);\r",
+							"\r",
+							"// Compare the actual and expected CITY values\r",
+							"pm.test(\"CITY value matches the expected value\", function () {\r",
+							"    pm.expect(actualCITY).to.equal(expectedCITY);\r",
+							"});\r",
+							"///////////// CONTRACT_STATUS /////////////////\r",
+							"// Get the expected CONTRACT_STATUS from the CSV file\r",
+							"var expectedCONTRACT_STATUS = pm.iterationData.get('CONTRACT_STATUS');\r",
+							"\r",
+							"// Get the actual CONTRACT_STATUS from the JSON response\r",
+							"var actualCONTRACT_STATUS = jsonData.CONTRACT_STATUS;\r",
+							"\r",
+							"console.log('Expected CONTRACT_STATUS:', expectedCONTRACT_STATUS);\r",
+							"console.log('Actual CONTRACT_STATUS from Response:', actualCONTRACT_STATUS);\r",
+							"\r",
+							"// Compare the actual and expected CONTRACT_STATUS values\r",
+							"pm.test(\"CONTRACT_STATUS value matches the expected value\", function () {\r",
+							"    pm.expect(actualCONTRACT_STATUS).to.equal(expectedCONTRACT_STATUS);\r",
+							"});\r",
+							"///////////// COUNTRY /////////////////\r",
+							"// Get the expected COUNTRY from the CSV file\r",
+							"var expectedCOUNTRY = pm.iterationData.get('COUNTRY');\r",
+							"\r",
+							"// Get the actual COUNTRY from the JSON response\r",
+							"var actualCOUNTRY = jsonData.COUNTRY;\r",
+							"\r",
+							"console.log('Expected COUNTRY:', expectedCOUNTRY);\r",
+							"console.log('Actual COUNTRY from Response:', actualCOUNTRY);\r",
+							"\r",
+							"// Compare the actual and expected COUNTRY values\r",
+							"pm.test(\"COUNTRY value matches the expected value\", function () {\r",
+							"    pm.expect(actualCOUNTRY).to.equal(expectedCOUNTRY);\r",
+							"});\r",
+							"///////////// ID /////////////////\r",
+							"// Get the expected ID from the CSV file\r",
+							"var expectedID = pm.iterationData.get('ID');\r",
+							"\r",
+							"// Get the actual ID from the JSON response\r",
+							"var actualID = jsonData.ID;\r",
+							"\r",
+							"console.log('Expected ID:', expectedID);\r",
+							"console.log('Actual ID from Response:', actualID);\r",
+							"\r",
+							"// Compare the actual and expected ID values\r",
+							"pm.test(\"ID value matches the expected value\", function () {\r",
+							"    pm.expect(actualID).to.equal(expectedID);\r",
+							"});\r",
+							"///////////// INSTITUTION /////////////////\r",
+							"// Get the expected INSTITUTION from the CSV file\r",
+							"var expectedINSTITUTION = pm.iterationData.get('INSTITUTION');\r",
+							"\r",
+							"// Get the actual INSTITUTION from the JSON response\r",
+							"var actualINSTITUTION = jsonData.INSTITUTION;\r",
+							"\r",
+							"console.log('Expected INSTITUTION:', expectedINSTITUTION);\r",
+							"console.log('Actual INSTITUTION from Response:', actualINSTITUTION);\r",
+							"\r",
+							"// Compare the actual and expected INSTITUTION values\r",
+							"pm.test(\"INSTITUTION value matches the expected value\", function () {\r",
+							"    pm.expect(actualINSTITUTION).to.equal(expectedINSTITUTION);\r",
+							"});\r",
+							"///////////// MOBILE_PHONE /////////////////\r",
+							"// Get the expected MOBILE_PHONE from the CSV file\r",
+							"var expectedMOBILE_PHONE = pm.iterationData.get('MOBILE_PHONE');\r",
+							"\r",
+							"// Get the actual MOBILE_PHONE from the JSON response\r",
+							"var actualMOBILE_PHONE = jsonData.MOBILE_PHONE;\r",
+							"\r",
+							"console.log('Expected MOBILE_PHONE:', expectedMOBILE_PHONE);\r",
+							"console.log('Actual MOBILE_PHONE from Response:', actualMOBILE_PHONE);\r",
+							"\r",
+							"// Compare the actual and expected MOBILE_PHONE values\r",
+							"pm.test(\"MOBILE_PHONE value matches the expected value\", function () {\r",
+							"    if (expectedMOBILE_PHONE=== 'null') {\r",
+							"            pm.expect(actualMOBILE_PHONE).to.equal(null);\r",
+							"        } else {\r",
+							"            pm.expect(actualMOBILE_PHONE).to.equal(expectedMOBILE_PHONE);\r",
+							"        }\r",
+							"});\r",
+							"///////////// NUM_SUBJ_ENRL /////////////////\r",
+							"// Get the expected NUM_SUBJ_ENRL from the CSV file\r",
+							"var expectedNUM_SUBJ_ENRL = pm.iterationData.get('NUM_SUBJ_ENRL');\r",
+							"\r",
+							"// Get the actual NUM_SUBJ_ENRL from the JSON response\r",
+							"var actualNUM_SUBJ_ENRL = jsonData.NUM_SUBJ_ENRL;\r",
+							"\r",
+							"console.log('Expected NUM_SUBJ_ENRL:', expectedNUM_SUBJ_ENRL);\r",
+							"console.log('Actual NUM_SUBJ_ENRL from Response:', actualNUM_SUBJ_ENRL);\r",
+							"\r",
+							"// Compare the actual and expected NUM_SUBJ_ENRL values\r",
+							"pm.test(\"NUM_SUBJ_ENRL value matches the expected value\", function () {\r",
+							"    pm.expect(actualNUM_SUBJ_ENRL).to.equal(expectedNUM_SUBJ_ENRL);\r",
+							"});\r",
+							"///////////// NUM_SUBJ_SCRN /////////////////\r",
+							"// Get the expected NUM_SUBJ_SCRN from the CSV file\r",
+							"var expectedNUM_SUBJ_SCRN = pm.iterationData.get('NUM_SUBJ_SCRN');\r",
+							"\r",
+							"// Get the actual NUM_SUBJ_SCRN from the JSON response\r",
+							"var actualNUM_SUBJ_SCRN = jsonData.NUM_SUBJ_SCRN;\r",
+							"\r",
+							"console.log('Expected NUM_SUBJ_SCRN:', expectedNUM_SUBJ_SCRN);\r",
+							"console.log('Actual NUM_SUBJ_SCRN from Response:', actualNUM_SUBJ_SCRN);\r",
+							"\r",
+							"// Compare the actual and expected NUM_SUBJ_SCRN values\r",
+							"pm.test(\"NUM_SUBJ_SCRN value matches the expected value\", function () {\r",
+							"    pm.expect(actualNUM_SUBJ_SCRN).to.equal(expectedNUM_SUBJ_SCRN);\r",
+							"});\r",
+							"///////////// PI_EMAIL /////////////////\r",
+							"// Get the expected PI_EMAIL from the CSV file\r",
+							"var expectedPI_EMAIL = pm.iterationData.get('PI_EMAIL');\r",
+							"\r",
+							"// Get the actual PI_EMAIL from the JSON response\r",
+							"var actualPI_EMAIL = jsonData.PI_EMAIL;\r",
+							"\r",
+							"console.log('Expected PI_EMAIL:', expectedPI_EMAIL);\r",
+							"console.log('Actual PI_EMAIL from Response:', actualPI_EMAIL);\r",
+							"\r",
+							"// Compare the actual and expected PI_EMAIL values\r",
+							"pm.test(\"PI_EMAIL value matches the expected value\", function () {\r",
+							"    pm.expect(actualPI_EMAIL).to.equal(expectedPI_EMAIL);\r",
+							"});\r",
+							"///////////// PI_FIRSTNAME /////////////////\r",
+							"// Get the expected PI_FIRSTNAME from the CSV file\r",
+							"var expectedPI_FIRSTNAME = pm.iterationData.get('PI_FIRSTNAME');\r",
+							"\r",
+							"// Get the actual PI_FIRSTNAME from the JSON response\r",
+							"var actualPI_FIRSTNAME = jsonData.PI_FIRSTNAME;\r",
+							"\r",
+							"console.log('Expected PI_FIRSTNAME:', expectedPI_FIRSTNAME);\r",
+							"console.log('Actual PI_FIRSTNAME from Response:', actualPI_FIRSTNAME);\r",
+							"\r",
+							"// Compare the actual and expected PI_FIRSTNAME values\r",
+							"pm.test(\"PI_FIRSTNAME value matches the expected value\", function () {\r",
+							"    pm.expect(actualPI_FIRSTNAME).to.equal(expectedPI_FIRSTNAME);\r",
+							"});\r",
+							"///////////// PI_LASTNAME /////////////////\r",
+							"// Get the expected PI_LASTNAME from the CSV file\r",
+							"var expectedPI_LASTNAME = pm.iterationData.get('PI_LASTNAME');\r",
+							"\r",
+							"// Get the actual PI_LASTNAME from the JSON response\r",
+							"var actualPI_LASTNAME = jsonData.PI_LASTNAME;\r",
+							"\r",
+							"console.log('Expected PI_LASTNAME:', expectedPI_LASTNAME);\r",
+							"console.log('Actual PI_LASTNAME from Response:', actualPI_LASTNAME);\r",
+							"\r",
+							"// Compare the actual and expected PI_LASTNAME values\r",
+							"pm.test(\"PI_LASTNAME value matches the expected value\", function () {\r",
+							"    pm.expect(actualPI_LASTNAME).to.equal(expectedPI_LASTNAME);\r",
+							"});\r",
+							"///////////// PI_NUMBER /////////////////\r",
+							"// Get the expected PI_NUMBER from the CSV file\r",
+							"var expectedPI_NUMBER = pm.iterationData.get('PI_NUMBER');\r",
+							"\r",
+							"// Get the actual PI_NUMBER from the JSON response\r",
+							"var actualPI_NUMBER = jsonData.PI_NUMBER;\r",
+							"\r",
+							"console.log('Expected PI_NUMBER:', expectedPI_NUMBER);\r",
+							"console.log('Actual PI_NUMBER from Response:', actualPI_NUMBER);\r",
+							"\r",
+							"// Compare the actual and expected PI_NUMBER values\r",
+							"pm.test(\"PI_NUMBER value matches the expected value\", function () {\r",
+							"    pm.expect(actualPI_NUMBER).to.equal(expectedPI_NUMBER);\r",
+							"});\r",
+							"///////////// POSTAL_CODE /////////////////\r",
+							"// Get the expected POSTAL_CODE from the CSV file\r",
+							"var expectedPOSTAL_CODE = pm.iterationData.get('POSTAL_CODE').toString();\r",
+							"\r",
+							"// Get the actual POSTAL_CODE from the JSON response\r",
+							"var actualPOSTAL_CODE = jsonData.POSTAL_CODE;\r",
+							"\r",
+							"console.log('Expected POSTAL_CODE:', expectedPOSTAL_CODE);\r",
+							"console.log('Actual POSTAL_CODE from Response:', actualPOSTAL_CODE);\r",
+							"\r",
+							"// Compare the actual and expected POSTAL_CODE values\r",
+							"pm.test(\"POSTAL_CODE value matches the expected value\", function () {\r",
+							"    pm.expect(actualPOSTAL_CODE).to.equal(expectedPOSTAL_CODE);\r",
+							"});\r",
+							"\r",
+							"///////////// PRIMARY_PHONE /////////////////\r",
+							"// Get the expected PRIMARY_PHONE from the CSV file\r",
+							"var expectedPRIMARY_PHONE = pm.iterationData.get('PRIMARY_PHONE').toString();\r",
+							"\r",
+							"// Get the actual PRIMARY_PHONE from the JSON response\r",
+							"var actualPRIMARY_PHONE = jsonData.PRIMARY_PHONE;\r",
+							"\r",
+							"console.log('Expected PRIMARY_PHONE:', expectedPRIMARY_PHONE);\r",
+							"console.log('Actual PRIMARY_PHONE from Response:', actualPRIMARY_PHONE);\r",
+							"\r",
+							"// Compare the actual and expected PRIMARY_PHONE values\r",
+							"pm.test(\"PRIMARY_PHONE value matches the expected value\", function () {\r",
+							"    pm.expect(actualPRIMARY_PHONE).to.equal(expectedPRIMARY_PHONE);\r",
+							"});\r",
+							"///////////// PROTOCOL_NUMBER /////////////////\r",
+							"// Get the expected PROTOCOL_NUMBER from the CSV file\r",
+							"var expectedPROTOCOL_NUMBER = pm.iterationData.get('PROTOCOL_NUMBER');\r",
+							"\r",
+							"// Get the actual PROTOCOL_NUMBER from the JSON response\r",
+							"var actualPROTOCOL_NUMBER = jsonData.PROTOCOL_NUMBER;\r",
+							"\r",
+							"console.log('Expected PROTOCOL_NUMBER:', expectedPROTOCOL_NUMBER);\r",
+							"console.log('Actual PROTOCOL_NUMBER from Response:', actualPROTOCOL_NUMBER);\r",
+							"\r",
+							"// Compare the actual and expected PROTOCOL_NUMBER values\r",
+							"pm.test(\"PROTOCOL_NUMBER value matches the expected value\", function () {\r",
+							"    pm.expect(actualPROTOCOL_NUMBER).to.equal(expectedPROTOCOL_NUMBER);\r",
+							"});\r",
+							"///////////// REG_DOC_STATUS /////////////////\r",
+							"// Get the expected REG_DOC_STATUS from the CSV file\r",
+							"var expectedREG_DOC_STATUS = pm.iterationData.get('REG_DOC_STATUS');\r",
+							"\r",
+							"// Get the actual REG_DOC_STATUS from the JSON response\r",
+							"var actualREG_DOC_STATUS = jsonData.REG_DOC_STATUS;\r",
+							"\r",
+							"console.log('Expected REG_DOC_STATUS:', expectedREG_DOC_STATUS);\r",
+							"console.log('Actual REG_DOC_STATUS from Response:', actualREG_DOC_STATUS);\r",
+							"\r",
+							"// Compare the actual and expected REG_DOC_STATUS values\r",
+							"pm.test(\"REG_DOC_STATUS value matches the expected value\", function () {\r",
+							"    pm.expect(actualREG_DOC_STATUS).to.equal(expectedREG_DOC_STATUS);\r",
+							"});\r",
+							"///////////// SITE_ACTIVATION_DATE /////////////////\r",
+							"// Get the expected SITE_ACTIVATION_DATE from the CSV file\r",
+							"var expectedSITE_ACTIVATION_DATE = pm.iterationData.get('SITE_ACTIVATION_DATE');\r",
+							"\r",
+							"// Get the actual SITE_ACTIVATION_DATE from the JSON response\r",
+							"var actualSITE_ACTIVATION_DATE = jsonData.SITE_ACTIVATION_DATE;\r",
+							"\r",
+							"console.log('Expected SITE_ACTIVATION_DATE:', expectedSITE_ACTIVATION_DATE);\r",
+							"console.log('Actual SITE_ACTIVATION_DATE from Response:', actualSITE_ACTIVATION_DATE);\r",
+							"\r",
+							"// Compare the actual and expected SITE_ACTIVATION_DATE values\r",
+							"pm.test(\"SITE_ACTIVATION_DATE value matches the expected value\", function () {\r",
+							"    pm.expect(actualSITE_ACTIVATION_DATE).to.equal(expectedSITE_ACTIVATION_DATE);\r",
+							"});\r",
+							"///////////// SITE_CLOSE_DATE /////////////////\r",
+							"// Get the expected SITE_CLOSE_DATE from the CSV file\r",
+							"var expectedSITE_CLOSE_DATE = pm.iterationData.get('SITE_CLOSE_DATE');\r",
+							"\r",
+							"// Get the actual SITE_CLOSE_DATE from the JSON response\r",
+							"var actualSITE_CLOSE_DATE = jsonData.SITE_CLOSE_DATE;\r",
+							"\r",
+							"console.log('Expected SITE_CLOSE_DATE:', expectedSITE_CLOSE_DATE);\r",
+							"console.log('Actual SITE_CLOSE_DATE from Response:', actualSITE_CLOSE_DATE);\r",
+							"\r",
+							"// Compare the actual and expected SITE_CLOSE_DATE values\r",
+							"pm.test(\"SITE_CLOSE_DATE value matches the expected value\", function () {\r",
+							"    pm.expect(actualSITE_CLOSE_DATE).to.equal(expectedSITE_CLOSE_DATE);\r",
+							"});\r",
+							"///////////// SITE_ID /////////////////\r",
+							"// Get the expected SITE_ID from the CSV file\r",
+							"var expectedSITE_ID = pm.iterationData.get('SITE_ID');\r",
+							"\r",
+							"// Get the actual SITE_ID from the JSON response\r",
+							"var actualSITE_ID = jsonData.SITE_ID;\r",
+							"\r",
+							"console.log('Expected SITE_ID:', expectedSITE_ID);\r",
+							"console.log('Actual SITE_ID from Response:', actualSITE_ID);\r",
+							"\r",
+							"// Compare the actual and expected SITE_ID values\r",
+							"pm.test(\"SITE_ID value matches the expected value\", function () {\r",
+							"    pm.expect(actualSITE_ID).to.equal(expectedSITE_ID);\r",
+							"});\r",
+							"///////////// SITE_NUMBER /////////////////\r",
+							"// Get the expected SITE_NUMBER from the CSV file\r",
+							"var expectedSITE_NUMBER = pm.iterationData.get('SITE_NUMBER');\r",
+							"\r",
+							"// Get the actual SITE_NUMBER from the JSON response\r",
+							"var actualSITE_NUMBER = jsonData.SITE_NUMBER;\r",
+							"\r",
+							"console.log('Expected SITE_NUMBER:', expectedSITE_NUMBER);\r",
+							"console.log('Actual SITE_NUMBER from Response:', actualSITE_NUMBER);\r",
+							"\r",
+							"// Compare the actual and expected SITE_NUMBER values\r",
+							"pm.test(\"SITE_NUMBER value matches the expected value\", function () {\r",
+							"    pm.expect(actualSITE_NUMBER).to.equal(expectedSITE_NUMBER);\r",
+							"});\r",
+							"///////////// SITE_STATUS /////////////////\r",
+							"// Get the expected SITE_STATUS from the CSV file\r",
+							"var expectedSITE_STATUS = pm.iterationData.get('SITE_STATUS');\r",
+							"\r",
+							"// Get the actual SITE_STATUS from the JSON response\r",
+							"var actualSITE_STATUS = jsonData.SITE_STATUS;\r",
+							"\r",
+							"console.log('Expected SITE_STATUS:', expectedSITE_STATUS);\r",
+							"console.log('Actual SITE_STATUS from Response:', actualSITE_STATUS);\r",
+							"\r",
+							"// Compare the actual and expected SITE_STATUS values\r",
+							"pm.test(\"SITE_STATUS value matches the expected value\", function () {\r",
+							"    pm.expect(actualSITE_STATUS).to.equal(expectedSITE_STATUS);\r",
+							"});\r",
+							"///////////// STATE /////////////////\r",
+							"// Get the expected STATE from the CSV file\r",
+							"var expectedSTATE = pm.iterationData.get('STATE');\r",
+							"\r",
+							"// Get the actual STATE from the JSON response\r",
+							"var actualSTATE = jsonData.STATE;\r",
+							"\r",
+							"console.log('Expected STATE:', expectedSTATE);\r",
+							"console.log('Actual STATE from Response:', actualSTATE);\r",
+							"\r",
+							"// Compare the actual and expected STATE values\r",
+							"pm.test(\"STATE value matches the expected value\", function () {\r",
+							"    pm.expect(actualSTATE).to.equal(expectedSTATE);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/sites/{{Site_Id}}",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"sites",
+						"{{Site_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Sites with Paging",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Expected Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(200);\r",
+							"        });\r",
+							"\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/sites?page_size=2&page_number=5",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"sites"
+					],
+					"query": [
+						{
+							"key": "page_size",
+							"value": "2"
+						},
+						{
+							"key": "page_number",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Sites with search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Expected Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(200);\r",
+							"        });\r",
+							"\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/sites?page_size=20&page_number=1&search=1-11BH",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"sites"
+					],
+					"query": [
+						{
+							"key": "page_size",
+							"value": "20"
+						},
+						{
+							"key": "page_number",
+							"value": "1"
+						},
+						{
+							"key": "search",
+							"value": "1-11BH"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Sites with Invalid Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"    \r",
+							"        pm.response.to.have.status(400);\r",
+							"        const statusCode = pm.response.code;\r",
+							"        const responseBody = pm.response.text();\r",
+							"        pm.test(\"Expected Response Body: \" + responseBody+ \" and Expected Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(400);\r",
+							"        ;\r",
+							"    });\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/sites/0",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"sites",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Sites with Invalid search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"    \r",
+							"        pm.response.to.have.status(400);\r",
+							"        const statusCode = pm.response.code;\r",
+							"        const responseBody = pm.response.text();\r",
+							"        pm.test(\"Expected Response Body: \" + responseBody+ \" and Expected Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(400);\r",
+							"        ;\r",
+							"    });\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/sites?page_size=20&page_number=0&search=00000",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"sites"
+					],
+					"query": [
+						{
+							"key": "page_size",
+							"value": "20"
+						},
+						{
+							"key": "page_number",
+							"value": "0"
+						},
+						{
+							"key": "search",
+							"value": "00000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Sites -Default 100 with Invalid Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"    \r",
+							"        pm.response.to.have.status(200);\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Expected Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(200);\r",
+							"        ;\r",
+							"    });\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var expectedProductCount = 100;\r",
+							"\r",
+							"    pm.test(`Number of displayed products is ${expectedProductCount}`, function () {\r",
+							"        pm.expect(jsonData.length).to.equal(expectedProductCount);\r",
+							"    });\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/sites?",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"sites"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,756 @@
+{
+	"info": {
+		"_postman_id": "548611ae-b453-4fc4-bc51-3558ed3993a3",
+		"name": "GILDA-Products",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29041441"
+	},
+	"item": [
+		{
+			"name": "Generate Access Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response has a JSON body\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has an access_token property\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.access_token).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"var data = pm.response.json();\r",
+							"pm.environment.set(\"access_token\", data.access_token);\r",
+							"\r",
+							"tests[\"status code is 200\"] = responseCode.code == 200;\r",
+							"\r",
+							"pm.test(\"Access Token\", function () {\r",
+							"    var accessToken = pm.environment.get(\"access_token\");\r",
+							"    pm.expect(accessToken).to.exist;\r",
+							"    pm.expect(accessToken).to.be.a(\"string\");\r",
+							"    pm.test(\"Access Token Value: \" + accessToken);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic NGhwZmljN3FyMTRxcTl1MWh0dGk4ZW5yZXY6MWdhOWdwOTY2OHY5ODJuMjZrbWh0MWs4ZjJldmVzM2VmajBnYWdjZmVtbTR1NW1vaTRuZg==",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://grasp-gilda-token.auth.us-west-2.amazoncognito.com/oauth2/token?grant_type=client_credentials&client_id=4hpfic7qr14qq9u1htti8enrev&scope=apiauthidentifier/json.read",
+					"protocol": "https",
+					"host": [
+						"grasp-gilda-token",
+						"auth",
+						"us-west-2",
+						"amazoncognito",
+						"com"
+					],
+					"path": [
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						},
+						{
+							"key": "client_id",
+							"value": "4hpfic7qr14qq9u1htti8enrev"
+						},
+						{
+							"key": "scope",
+							"value": "apiauthidentifier/json.read"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Products By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Replace the {{Product_Id}} placeholder in the request URL\r",
+							"var productId = pm.iterationData.get('Product_Id', { sheet: 'Products_TestData' });\r",
+							"var baseUrl = pm.variables.get('baseUrl');\r",
+							"var requestUrl = baseUrl + '/products/' + productId;\r",
+							"pm.request.url.update(requestUrl);\r",
+							"\r",
+							"\r",
+							"// Parse the JSON response\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Get the expected PRODUCT_NAME from the CSV file\r",
+							"var expectedProductName = pm.iterationData.get('PRODUCT_NAME');\r",
+							"\r",
+							"// Get the actual PRODUCT_NAME from the JSON response\r",
+							"var actualProductName = jsonData.PRODUCT_NAME;\r",
+							"\r",
+							"console.log('Expected Product Name:', expectedProductName);\r",
+							"console.log('Actual Product Name from Response:', actualProductName);\r",
+							"\r",
+							"// Compare the actual and expected PRODUCT_NAME values\r",
+							"pm.test(\"PRODUCT_NAME value matches the expected value\", function () {\r",
+							"    pm.expect(actualProductName).to.equal(expectedProductName);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Get the expected THERAPEUTIC_AREA from the CSV file\r",
+							"var expectedTHERAPEUTIC_AREA = pm.iterationData.get('THERAPEUTIC_AREA');\r",
+							"\r",
+							"// Get the actual THERAPEUTIC_AREA from the JSON response\r",
+							"var actualTHERAPEUTIC_AREA = jsonData.THERAPEUTIC_AREA;\r",
+							"\r",
+							"console.log('Expected THERAPEUTIC_AREA:', expectedProductName);\r",
+							"console.log('Actual THERAPEUTIC_AREA from Response:', actualProductName);\r",
+							"\r",
+							"// Compare the actual and expected PRODUCT_NAME values\r",
+							"pm.test(\"THERAPEUTIC_AREA value matches the expected value\", function () {\r",
+							"    pm.expect(actualTHERAPEUTIC_AREA).to.equal(expectedTHERAPEUTIC_AREA);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Get the expected PRODUCT_LINE from the CSV file\r",
+							"var expectedPRODUCT_LINE = pm.iterationData.get('PRODUCT_LINE');\r",
+							"\r",
+							"// Get the actual PRODUCT_LINE from the JSON response\r",
+							"var actualPRODUCT_LINE = jsonData.PRODUCT_LINE;\r",
+							"\r",
+							"console.log('Expected PRODUCT_LINE:', expectedPRODUCT_LINE);\r",
+							"console.log('Actual PRODUCT_LINE from Response:', actualPRODUCT_LINE);\r",
+							"\r",
+							"// Compare the actual and expected PRODUCT_NAME values\r",
+							"pm.test(\"PRODUCT_LINE value matches the expected value\", function () {\r",
+							"    pm.expect(actualPRODUCT_LINE).to.equal(expectedPRODUCT_LINE);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Get the expected PRODUCT_STAGE from the CSV file\r",
+							"var expectedPRODUCT_STAGE = pm.iterationData.get('PRODUCT_STAGE');\r",
+							"\r",
+							"// Get the actual PRODUCT_STAGE from the JSON response\r",
+							"var actualPRODUCT_STAGE = jsonData.PRODUCT_STAGE;\r",
+							"\r",
+							"console.log('Expected PRODUCT_STAGE:', expectedPRODUCT_LINE);\r",
+							"console.log('Actual PRODUCT_STAGE from Response:', actualPRODUCT_STAGE);\r",
+							"\r",
+							"// Compare the actual and expected PRODUCT_NAME values\r",
+							"pm.test(\"PRODUCT_STAGE value matches the expected value\", function () {\r",
+							"    pm.expect(actualPRODUCT_STAGE).to.equal(expectedPRODUCT_STAGE);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Get the expected PRODUCT_CODE from the CSV file\r",
+							"var expectedPRODUCT_CODE = pm.iterationData.get('PRODUCT_CODE').toString();\r",
+							"\r",
+							"\r",
+							"// Get the actual PRODUCT_CODE from the JSON response\r",
+							"var actualPRODUCT_CODE = jsonData.PRODUCT_CODE;\r",
+							"\r",
+							"console.log('Expected PRODUCT_CODE:', expectedPRODUCT_CODE);\r",
+							"console.log('Actual PRODUCT_STAGE from Response:', actualPRODUCT_CODE);\r",
+							"\r",
+							"// Compare the actual and expected PRODUCT_CODE values\r",
+							"pm.test(\"PRODUCT_CODE value matches the expected value\", function () {\r",
+							"    pm.expect(actualPRODUCT_CODE).to.equal(expectedPRODUCT_CODE);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"// Get the expected PCODE_ID from the CSV file\r",
+							"var expectedPCODE_ID = pm.iterationData.get('PCODE_ID');\r",
+							"\r",
+							"// Get the actual PCODE_ID from the JSON response\r",
+							"var actualPCODE_ID = jsonData.PCODE_ID;\r",
+							"\r",
+							"console.log('Expected PCODE_ID:', expectedPCODE_ID);\r",
+							"console.log('Actual PCODE_ID from Response:', actualPCODE_ID);\r",
+							"\r",
+							"// Compare the actual and expected PCODE_ID values\r",
+							"pm.test(\"PCODE_ID value matches the expected value\", function () {\r",
+							"    pm.expect(actualPCODE_ID).to.equal(expectedPCODE_ID);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"// Get the expected INDICATION from the CSV file\r",
+							"var expectedINDICATION = pm.iterationData.get('INDICATION');\r",
+							"\r",
+							"// Get the actual INDICATION from the JSON response\r",
+							"var actualINDICATION = jsonData.INDICATION;\r",
+							"\r",
+							"console.log('Expected INDICATION:', expectedINDICATION);\r",
+							"console.log('Actual INDICATION from Response:', actualINDICATION);\r",
+							"\r",
+							"// Compare the actual and expected INDICATION values\r",
+							"pm.test(\"INDICATION value matches the expected value\", function () {\r",
+							"    pm.expect(actualINDICATION).to.equal(expectedINDICATION);\r",
+							"});\r",
+							"\r",
+							"// Get the expected GSCODE from the CSV file\r",
+							"var expectedGSCODE = pm.iterationData.get('GSCODE');\r",
+							"\r",
+							"// Get the actual GSCODE from the JSON response\r",
+							"var actualGSCODE = jsonData.GSCODE;\r",
+							"\r",
+							"console.log('Expected GSCODE:', expectedGSCODE);\r",
+							"console.log('Actual GSCODE from Response:', actualGSCODE);\r",
+							"\r",
+							"// Compare the actual and expected GSCODE values\r",
+							"pm.test(\"GSCODE value matches the expected value\", function () {\r",
+							"   if (expectedGSCODE === 'null') {\r",
+							"            pm.expect(actualGSCODE).to.equal(null);\r",
+							"        } else {\r",
+							"            pm.expect(actualGSCODE).to.equal(expectedGSCODE);\r",
+							"        }\r",
+							"});\r",
+							"\r",
+							"// Get the expected IND_NUM from the CSV file\r",
+							"var expectedIND_NUM = pm.iterationData.get('IND_NUM');;\r",
+							"\r",
+							"// Get the actual GSCODE from the JSON response\r",
+							"var actualIND_NUM = jsonData.IND_NUM;\r",
+							"\r",
+							"console.log('Expected IND_NUM:', expectedIND_NUM);\r",
+							"console.log('Actual IND_NUM from Response:', actualIND_NUM);\r",
+							"\r",
+							"// Compare the actual and expected IND_NUM values\r",
+							"pm.test(\"IND_NUM value matches the expected value\", function () {\r",
+							"   if (expectedIND_NUM === 'null') {\r",
+							"            pm.expect(actualIND_NUM).to.equal(null);\r",
+							"        } else {\r",
+							"            pm.expect(actualIND_NUM).to.equal(expectedIND_NUM);\r",
+							"        }\r",
+							"});\r",
+							"\r",
+							"\r",
+							"try {\r",
+							"\r",
+							"    pm.response.to.have.status(200);\r",
+							"    const statusCode = pm.response.code;\r",
+							"    pm.test(\"Expected Status code: \" + statusCode, function () {\r",
+							"        pm.expect(statusCode).to.equal(200);\r",
+							"\r",
+							"    });\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "User-token",
+						"value": "{[access_token]}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/products/{{Products_Id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"products",
+						"{{Products_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Products By Id -Invalid Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"    pm.test(\"Test results\", function () {\r",
+							"        pm.response.to.have.status(400);\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(400);\r",
+							"        });\r",
+							"    });\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "User-token",
+						"value": "{[access_token]}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/products/0",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"products",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Product With No Paging",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(200);\r",
+							"        });\r",
+							"   } catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var expectedProductCount = 100;\r",
+							"\r",
+							"    pm.test(`Number of displayed products is ${expectedProductCount}`, function () {\r",
+							"        pm.expect(jsonData.length).to.equal(expectedProductCount);\r",
+							"    });\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/products/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Access Token-Dev",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response has a JSON body\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has an access_token property\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.access_token).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"var data = pm.response.json();\r",
+							"pm.environment.set(\"access_token\", data.access_token);\r",
+							"\r",
+							"tests[\"status code is 200\"] = responseCode.code == 200;\r",
+							"\r",
+							"pm.test(\"Access Token\", function () {\r",
+							"    var accessToken = pm.environment.get(\"access_token\");\r",
+							"    pm.expect(accessToken).to.exist;\r",
+							"    pm.expect(accessToken).to.be.a(\"string\");\r",
+							"    pm.test(\"Access Token Value: \" + accessToken);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic MTBrbHI5b3Z0YTBpMWZubDMwcnIwNHRqOW86MXFuY3E1MnJqYnVzazNicm8ydG1xY3J2ZmI5NDN1MzFjMnRpcXU1NGczcTFkOTZrZGNscg==",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://default-ds-masterapi-dev.auth.us-west-2.amazoncognito.com/oauth2/token?grant_type=client_credentials",
+					"protocol": "https",
+					"host": [
+						"default-ds-masterapi-dev",
+						"auth",
+						"us-west-2",
+						"amazoncognito",
+						"com"
+					],
+					"path": [
+						"oauth2",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials"
+						},
+						{
+							"key": "client_id",
+							"value": "4surrtkle8ig54jf2b7om50j5g",
+							"disabled": true
+						},
+						{
+							"key": "scope",
+							"value": "gilda-apis/products.read",
+							"disabled": true
+						},
+						{
+							"key": "scope",
+							"value": "gilda-apis/protocols.read",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Products with Paging",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(200);\r",
+							"        });\r",
+							"\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/products?page_size=20&page_number=2",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "page_size",
+							"value": "20"
+						},
+						{
+							"key": "page_number",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Products with Invalid Paging",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"     \r",
+							"        pm.response.to.have.status(400);\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Expected Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(400);\r",
+							"        });\r",
+							"    \r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/products?page_size=20&page_number=188",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "page_size",
+							"value": "20"
+						},
+						{
+							"key": "page_number",
+							"value": "188"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GILDA Products -Default 100 without Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"try {\r",
+							"    \r",
+							"        pm.response.to.have.status(200);\r",
+							"        const statusCode = pm.response.code;\r",
+							"        pm.test(\"Expected Status code: \" + statusCode, function () {\r",
+							"            pm.expect(statusCode).to.equal(200);\r",
+							"        ;\r",
+							"    });\r",
+							"} catch (error) {\r",
+							"    pm.test(\"Test results - Error\", function () {\r",
+							"        throw new Error(\"Error: \" + error.message);\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var expectedProductCount = 100;\r",
+							"\r",
+							"    pm.test(`Number of displayed products is ${expectedProductCount}`, function () {\r",
+							"        pm.expect(jsonData.length).to.equal(expectedProductCount);\r",
+							"    });\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{dev_access_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURLDEV}}/products?",
+					"host": [
+						"{{baseURLDEV}}"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
